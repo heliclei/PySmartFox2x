@@ -113,16 +113,16 @@ def decodeSFSObject(sfsBuffer):
     sfsObj = {}
     #sfsBuffer = SFSBuffer(buffer)
     header = sfsBuffer.getByte()
-    print "header"
-    print header
+    #print "header"
+    #print header
     dataSize = sfsBuffer.getShort()
-    print "dataSize"
-    print dataSize
+    #print "dataSize"
+    #print dataSize
     for n in range(0, dataSize):
         keySize = sfsBuffer.getShort()
-        print "keySize:" + str(keySize)
+        #print "keySize:" + str(keySize)
         keyName = bin2str(sfsBuffer.get(keySize))
-        print "keyName:" + keyName
+        #print "keyName:" + keyName
         aObj = decodeObject(sfsBuffer)
         sfsObj[keyName] = aObj
 
