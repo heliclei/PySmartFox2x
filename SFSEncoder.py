@@ -1,10 +1,4 @@
 
-def prepareTCPPacketObject(request, targetController, msgId):
-    TCPPacket = {}
-    TCPPacket['c'] = ('byte', targetController)
-    TCPPacket['a'] = ('short', msgId)
-    TCPPacket['p'] = ('object', request)
-    return TCPPacket
 
 def encodeSFSObjectKey(key):
     key_len = len(key)
@@ -107,14 +101,6 @@ def object2binary(obj):
         arr.extend(encodeData(obj[k][1], obj[k][0]))
     return arr
 
-def buildTCPPacketStream(packet_obj):
-    stream = bytearray()
-    packet = object2binary(packet_obj)
-    stream.append(8*16)
-    stream.append((len(packet)/256)%256)
-    stream.append(len(packet)%256)
-    stream.extend(packet)
-    return stream
 
 if __name__ == '__main__':
     array = binEncodeShort(-1)

@@ -1,6 +1,13 @@
 import socket
 from SFSEncoder import *
 
+def printByteArray(data):
+    strData = ""
+    for ch in data:
+        strData += "%.02x " % ch
+
+    print strData
+
 def prepareTCPPacketObject(request, targetController, msgId):
     TCPPacket = {}
     TCPPacket['c'] = ('byte', targetController)
@@ -38,7 +45,13 @@ def send(s, packet):
     header = s.recv(3)
     dataLen = ord(header[1]) * 256 + ord(header[2])
     print 'recv data len:' + str(dataLen)
-    return s.recv(dataLen)
+    recv_len = 0
+    data = bytearray()
+    while recv_len < dataLen:
+        r = s.recv(1024)
+        data.extend(r)
+        recv_len += len(r)
+    return data
 
 #connect to sfs server via tcp socket
 def connect(addr, port):

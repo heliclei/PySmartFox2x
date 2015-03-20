@@ -18,12 +18,12 @@ class SFSBuffer:
         self.__idx = idx
 
     def getByte(self):
-        ret = ord(self.__buffer[self.__idx])
+        ret = self.__buffer[self.__idx]
         self.__idx += 1
         return ret
 
     def getShort(self):
-        ret = ord(self.__buffer[self.__idx]) * 256 + ord(self.__buffer[self.__idx+1])
+        ret = self.__buffer[self.__idx] * 256 + self.__buffer[self.__idx+1]
         self.__idx += 2
         return ret
     
@@ -31,7 +31,7 @@ class SFSBuffer:
         k = self.__idx
         val = 0
         for n in range(k, k+4):
-            val = val*256 + ord(self.__buffer[n])
+            val = val*256 + self.__buffer[n]
         self.__idx += 4
         return val 
 
@@ -39,7 +39,7 @@ class SFSBuffer:
         k = self.__idx
         val = 0
         for n in range(k, k+8):
-            val = val*256 + ord(self.__buffer[n])
+            val = val*256 + self.__buffer[n]
         self.__idx += 8
         return val 
 
