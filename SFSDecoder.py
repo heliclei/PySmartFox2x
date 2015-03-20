@@ -48,6 +48,7 @@ class SFSBuffer:
         ret = self.__buffer[k:k+length]
         self.__idx += length
         return ret
+
     def getBuffer(self):
         return self.__buffer[self.__idx:]
 #end of Class SFSBuffer
@@ -80,6 +81,28 @@ def binDecodeLong(sfsBuffer):
     val = sfsBuffer.getLong()
     return ('long', val)
 
+def binDecodeByteArray(sfsBuffer):
+    #arr = bytearray()
+    arrSize = sfsBuffer.getInt()
+    arr = sfsBuffer.get(arrSize)
+    return ('byte_array', arr)
+
+def binDecodeIntArray(sfsBuffer):
+    arr = []
+    arrSize = sfsBuffer.getShort()
+    for n in range(0, arrSize):
+        val = sfsBuffer.getInt()
+        arr.append(val)
+    return ('int_array', arr)
+
+def binDecodeLongArray(sfsBuffer):
+    arr = []
+    arrSize = sfsBuffer.getShort()
+    for n in range(0, arrSize):
+        val = sfsBuffer.getLong()
+        arr.append(val)
+    return ('long_array', arr)
+
 def decodeSFSArray(sfsBuffer):
     sfsArray = []
     size = sfsBuffer.getShort()
@@ -103,12 +126,18 @@ def decodeObject(sfsBuffer):
         return binDecodeLong(sfsBuffer)
     if (typeId == 8):
         return binDecodeString(sfsBuffer)
+    if (typeId == 10):
+        return binDecodeByteArray(sfsBuffer)
+    if (typeId == 12):
+        return binDecodeIntArray(sfsBuffer)
+    if (typeId == 13):
+        return binDecodeLongArray(sfsBuffer)
     if (typeId == 17):
         return decodeSFSArray(sfsBuffer)
     if (typeId == 18):
         sfsBuffer.setIdx(sfsBuffer.getIdx() - 1)
         return ('object', decodeSFSObject(sfsBuffer))
-    print "no matching typeId!"
+    print "no matching typeId:" + str(typeId)
 def decodeSFSObject(sfsBuffer):
     sfsObj = {}
     #sfsBuffer = SFSBuffer(buffer)
